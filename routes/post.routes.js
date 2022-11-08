@@ -72,5 +72,17 @@ router.post("/likes/:id/:info", async (req, res, next)=>{
 
 })
 
+router.get("/all-posts", async (req, res, next)=>{
+
+    try{
+        const response = await Post.find().populate("author")
+        res.json(response)
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
+
 
 module.exports = router
