@@ -76,7 +76,7 @@ router.post("/likes/:id/:info", async (req, res, next)=>{
 router.get("/all-posts", async (req, res, next)=>{
 
     try{
-        const response = await Post.find().populate("author")
+        const response = await Post.find().populate("author").populate("comments")
         res.json(response)
     }
     catch(err){
