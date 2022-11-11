@@ -90,7 +90,7 @@ router.get("/:id", async (req, res, next)=>{
     const {id} = req.params
 
     try{
-        const post = await Post.findById(id)
+        const post = await Post.findById(id).populate("author")
         const comments = await Comment.find({post: id}).populate("author")
         
         res.json({post, comments})
