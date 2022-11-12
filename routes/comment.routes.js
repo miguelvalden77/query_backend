@@ -29,8 +29,8 @@ router.post("/create", async (req, res, next)=>{
 
 router.post("/update/:id", async (req, res, next)=>{
 
-    const {description} = req.body
     const {id} = req.params
+    const {description} = req.body
 
     if(!description){
         res.status(400).json({errorMessage: "El comentario debe tener contenido"})
@@ -39,7 +39,7 @@ router.post("/update/:id", async (req, res, next)=>{
 
     try{
 
-        await Comment.findByIdAndUpdate(id, {description: description})
+        await Comment.findByIdAndUpdate(id, {description})
 
         res.json({succesMessage: "Comentario actualizado"})
 
