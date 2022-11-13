@@ -33,7 +33,10 @@ const userSchema = new Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user"
-    }
+    },
+    postsLike:[{
+      type: String
+    }]
   },
   {    
     timestamps: true

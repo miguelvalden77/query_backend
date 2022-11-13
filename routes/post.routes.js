@@ -46,29 +46,35 @@ router.post("/delete/:id", async (req, res, next)=>{
 
 })
 
-router.post("/likes/:id/:info", async (req, res, next)=>{
+router.post("/likes/:id/:userId", async (req, res, next)=>{
 
-    const {id, info} = req.params
+    const {id, userId} = req.params
 
     try{
 
-        if(info == "plus"){
-            await Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
-            res.json({succesMessage: "Like subido"})
-            return
-        }
+        const usuario = await User.findOne({$and: [{username: userId}, {postsLike: id}]})
+        console.log("caracola", usuario)
 
-        if(info == "less"){
+        if(usuario != null){
             await Post.findByIdAndUpdate(id, {$inc: {likes: -1}})
+            await User.findOneAndUpdate({username: userId}, {$pull: {postsLike: id}})
             res.json({succesMessage: "Like disminuido"})
             return
         }
 
-        res.status(400).json({errorMessage: "Parámetros desconocidos"})
+        
+            await Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
+            await User.findOneAndUpdate({username: userId}, {$addToSet: {postsLike: id}})
+            res.json({succesMessage: "Like subido"})
+            return
+        
 
-    }
-    catch(err){
-        console.log(err)
+
+            
+        }
+        catch(err){
+            console.log(err)
+            res.status(400).json({errorMessage: "Parámetros desconocidos"})
     }
 
 })
