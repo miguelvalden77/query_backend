@@ -35,7 +35,8 @@ const userSchema = new Schema(
       default: "user"
     },
     postsLike:[{
-      type: String
+      type: Schema.Types.ObjectId,
+      ref: "Post"
     }]
   },
   {    

@@ -46,30 +46,25 @@ router.post("/delete/:id", async (req, res, next)=>{
 
 })
 
-router.post("/likes/:id/:userId", async (req, res, next)=>{
+router.post("/likes/:id/:username", async (req, res, next)=>{
 
-    const {id, userId} = req.params
+    const {id, username} = req.params
 
     try{
 
-        const usuario = await User.findOne({$and: [{username: userId}, {postsLike: id}]})
-        console.log("caracola", usuario)
+        const usuario = await User.findOne({$and: [{username: username}, {postsLike: id}]})
 
         if(usuario != null){
             await Post.findByIdAndUpdate(id, {$inc: {likes: -1}})
-            await User.findOneAndUpdate({username: userId}, {$pull: {postsLike: id}})
+            await User.findOneAndUpdate({username: username}, {$pull: {postsLike: id}})
             res.json({succesMessage: "Like disminuido"})
             return
         }
 
-        
-            await Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
-            await User.findOneAndUpdate({username: userId}, {$addToSet: {postsLike: id}})
-            res.json({succesMessage: "Like subido"})
-            return
-        
-
-
+        await Post.findByIdAndUpdate(id, {$inc: {likes: 1}})
+        await User.findOneAndUpdate({username: username}, {$addToSet: {postsLike: id}})
+        res.json({succesMessage: "Like subido"})
+        return
             
         }
         catch(err){
