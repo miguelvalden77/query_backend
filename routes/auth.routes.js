@@ -105,6 +105,20 @@ router.get("/verify", isAuth, async (req, res, next)=>{
     }
 })
 
+router.get("/likesArr/:id", async (req, res, next)=>{
+
+    const {id} = req.params
+
+    try{
+        const likes = await User.findById(id).select("postsLike")
+        res.json(likes)
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})  
+
 
 
 module.exports = router
