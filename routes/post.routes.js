@@ -103,5 +103,21 @@ router.get("/:id", async (req, res, next)=>{
 
 })
 
+router.get("/user/:id", async (req, res, next)=>{
+
+    const {id} = req.params
+
+    try{
+
+        const userPosts = await User.findById(id).select("posts").populate("posts")
+
+        res.json(userPosts)
+
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
 
 module.exports = router
