@@ -68,7 +68,7 @@ router.post("/login", async (req, res, next)=>{
             return
         }
 
-        const isPasswordValid = bcrypt.compare(password, foundUser.password)
+        const isPasswordValid = await bcrypt.compare(password, foundUser.password)
 
         if(!isPasswordValid){
             res.status(400).json({errorMessage: "Contraseña incorrecta"})
