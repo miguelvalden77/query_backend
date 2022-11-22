@@ -37,7 +37,13 @@ const userSchema = new Schema(
     postsLike:[{
       type: Schema.Types.ObjectId,
       ref: "Post"
-    }]
+    }],
+    personalDescription:{
+      type: String
+    },
+    profilePhoto: {
+      type: String
+    }
   },
   {    
     timestamps: true

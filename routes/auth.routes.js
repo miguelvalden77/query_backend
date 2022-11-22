@@ -82,7 +82,9 @@ router.post("/login", async (req, res, next)=>{
             posts: foundUser.posts,
             comments: foundUser.comments,
             role: foundUser.role,
-            postsLike: foundUser.postsLike
+            postsLike: foundUser.postsLike,
+            personalDescription: foundUser.personalDescription,
+            profilePhoto: foundUser.profilePhoto
         }
 
         const authToken = jwt.sign(payload, process.env.SECRET_KEY, {algorithm: "HS256", expiresIn: "12h"})
@@ -118,7 +120,6 @@ router.get("/likesArr/:id", async (req, res, next)=>{
     }
 
 })  
-
 
 
 module.exports = router
