@@ -38,4 +38,24 @@ router.get("/personalDescription/:userId", async (req, res, next)=>{
 
 })
 
+router.post("/:id/profilePhoto", async (req, res, next)=>{
+
+    const {id} = req.params
+    const {url} = req.body
+
+    try{
+
+        if(url){
+            await User.findByIdAndUpdate(id, {profilePhoto: url})
+            res.json({succesMessage: "Foto cambiada"})
+            return
+        }
+
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
+
 module.exports = router
