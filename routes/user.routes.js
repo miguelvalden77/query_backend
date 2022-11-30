@@ -58,4 +58,36 @@ router.post("/:id/profilePhoto", async (req, res, next)=>{
 
 })
 
+router.get("/:username/all", async (req, res, next)=>{
+
+    const {username} = req.params
+
+    try{
+
+        const response = await User.find({username: {$regex: username}})
+        res.json(response)
+
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
+
+router.get("/:id", async (req, res, next)=>{
+
+    const {id} = req.params
+
+    try{
+
+        const user = await User.findById(id)
+        res.json(user)
+
+    }
+    catch(err){
+        console.log(err)
+    }
+
+})
+
 module.exports = router
