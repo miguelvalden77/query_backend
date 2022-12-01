@@ -90,4 +90,40 @@ router.get("/:id", async (req, res, next)=>{
 
 })
 
+router.post("/add/:userId", async (req, res, next)=>{
+
+    const {userId} = req.params
+    const {id} = req.body
+
+    try{
+        
+        // const friend = User.findById(userId)
+
+        await User.findByIdAndUpdate(id, {$addToSet: {friends: userId}})
+        res.json({succesMessage: "Amigo añadido"})
+
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+router.post("/substract/:userId", async (req, res, next)=>{
+
+    const {userId} = req.params
+    const {id} = req.body
+
+    try{
+        
+        // const friend = User.findById(userId)
+
+        await User.findByIdAndUpdate(id, {$pull: {friends: userId}})
+        res.json({succesMessage: "Amigo eliminado"})
+
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
 module.exports = router
