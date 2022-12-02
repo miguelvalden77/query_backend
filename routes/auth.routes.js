@@ -79,6 +79,7 @@ router.post("/login", async (req, res, next)=>{
             username: foundUser.username,
             posts: foundUser.posts,
             comments: foundUser.comments,
+            friends: foundUser.friends,
             role: foundUser.role,
             postsLike: foundUser.postsLike,
             personalDescription: foundUser.personalDescription,
