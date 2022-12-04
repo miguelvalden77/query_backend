@@ -2,6 +2,7 @@ const router = require("express").Router()
 const Comment = require("../models/Comment.model")
 const User = require("../models/User.model")
 const Post = require("../models/Post.model")
+const { findOne } = require("../models/User.model")
 
 router.post("/create", async (req, res, next)=>{
 
@@ -56,7 +57,9 @@ router.post("/delete/:id", async (req, res, next)=>{
 
     try{
 
-        await Comment.findByIdAndDelete(id)
+        const comment = await Comment.findByIdAndDelete(id)
+        await User.findOneAndUpdate({comments: comment._id}, {$pull: {comments: comment._id}})
+        await Post.findOneAndUpdate({comments: comment._id}, {$pull: {comments: comment._id}})
 
         res.json({succesMessage: "Comentario borrado"})
 
