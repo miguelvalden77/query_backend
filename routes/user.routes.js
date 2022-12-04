@@ -1,7 +1,8 @@
 const router = require("express").Router()
+const isAuth = require("../middlewares/isAuth")
 const User = require("../models/User.model")
 
-router.post("/userDescription/:userId", async (req, res, next)=>{
+router.post("/userDescription/:userId", isAuth, async (req, res, next)=>{
 
     const {userDescription} = req.body
     const {userId} = req.params
@@ -16,12 +17,12 @@ router.post("/userDescription/:userId", async (req, res, next)=>{
         res.json({succesMessage: "Información personal cambiada"})
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.get("/personalDescription/:userId", async (req, res, next)=>{
+router.get("/personalDescription/:userId", isAuth, async (req, res, next)=>{
 
     const {userId} = req.params
 
@@ -31,7 +32,7 @@ router.get("/personalDescription/:userId", async (req, res, next)=>{
         res.json(foundUser.personalDescription)
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
@@ -51,7 +52,7 @@ router.post("/:id/profilePhoto", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
@@ -67,7 +68,7 @@ router.get("/:username/all", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
@@ -83,48 +84,13 @@ router.get("/:id", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.post("/add/:userId", async (req, res, next)=>{
 
-    const {userId} = req.params
-    const {id} = req.body
-
-    try{
-        
-        // const friend = User.findById(userId)
-
-        await User.findByIdAndUpdate(id, {$addToSet: {friends: userId}})
-        res.json({succesMessage: "Amigo añadido"})
-
-    }
-    catch(err){
-        console.log(err)
-    }
-})
-
-router.post("/substract/:userId", async (req, res, next)=>{
-
-    const {userId} = req.params
-    const {id} = req.body
-
-    try{
-        
-        // const friend = User.findById(userId)
-
-        await User.findByIdAndUpdate(id, {$pull: {friends: userId}})
-        res.json({succesMessage: "Amigo eliminado"})
-
-    }
-    catch(err){
-        console.log(err)
-    }
-})
-
-router.get("/friends/:username", async (req, res, next)=>{
+router.get("/friends/:username", isAuth, async (req, res, next)=>{
 
     const {username} = req.params
 
@@ -133,12 +99,12 @@ router.get("/friends/:username", async (req, res, next)=>{
         res.json(friendsArray.friends)
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.get("/friendVerify/:userId/:username", async (req, res, next)=>{
+router.get("/friendVerify/:userId/:username", isAuth, async (req, res, next)=>{
 
     const {username, userId} = req.params
 
@@ -158,7 +124,7 @@ router.get("/friendVerify/:userId/:username", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })

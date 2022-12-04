@@ -2,9 +2,10 @@ const router = require("express").Router()
 const Comment = require("../models/Comment.model")
 const User = require("../models/User.model")
 const Post = require("../models/Post.model")
+const isAuth = require("../middlewares/isAuth")
 
 
-router.post("/create", async (req, res, next)=>{
+router.post("/create", isAuth, async (req, res, next)=>{
 
     const {title, photo, author} = req.body
 
@@ -22,13 +23,12 @@ router.post("/create", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
-        res.json({errorMessage: "no post"})
+        next(err)
     }
 
 })
 
-router.post("/delete/:id", async (req, res, next)=>{
+router.post("/delete/:id", isAuth, async (req, res, next)=>{
 
     const {id} = req.params
 
@@ -48,7 +48,7 @@ router.post("/delete/:id", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
@@ -75,25 +75,24 @@ router.post("/likes/:id/:username", async (req, res, next)=>{
             
         }
         catch(err){
-            console.log(err)
-            res.status(400).json({errorMessage: "Parámetros desconocidos"})
+            next(err)
     }
 
 })
 
-router.get("/all-posts", async (req, res, next)=>{
+router.get("/all-posts", isAuth, async (req, res, next)=>{
 
     try{
         const response = await Post.find().populate("author")
         res.json(response)
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.get("/:id", async (req, res, next)=>{
+router.get("/:id", isAuth, async (req, res, next)=>{
 
     const {id} = req.params
 
@@ -122,7 +121,7 @@ router.get("/user/:id", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })

@@ -92,7 +92,7 @@ router.post("/login", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
@@ -102,7 +102,7 @@ router.get("/verify", isAuth, async (req, res, next)=>{
         res.json(req.payload)
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 })
 
@@ -115,7 +115,7 @@ router.get("/likesArr/:id", async (req, res, next)=>{
         res.json(likes)
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })  

@@ -3,8 +3,9 @@ const Comment = require("../models/Comment.model")
 const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const { findOne } = require("../models/User.model")
+const isAuth = require("../middlewares/isAuth")
 
-router.post("/create", async (req, res, next)=>{
+router.post("/create", isAuth, async (req, res, next)=>{
 
     const {author, description, post} = req.body
 
@@ -23,12 +24,12 @@ router.post("/create", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.post("/update/:id", async (req, res, next)=>{
+router.post("/update/:id", isAuth, async (req, res, next)=>{
 
     const {id} = req.params
     const {description} = req.body
@@ -46,12 +47,12 @@ router.post("/update/:id", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
 
-router.post("/delete/:id", async (req, res, next)=>{
+router.post("/delete/:id", isAuth, async (req, res, next)=>{
 
     const {id} = req.params
 
@@ -65,7 +66,7 @@ router.post("/delete/:id", async (req, res, next)=>{
 
     }
     catch(err){
-        console.log(err)
+        next(err)
     }
 
 })
