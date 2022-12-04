@@ -37,6 +37,13 @@ router.post("/delete/:id", async (req, res, next)=>{
         const deletedPost = await Post.findByIdAndDelete(id).populate("author")
         await User.findByIdAndUpdate(deletedPost.author._id, {$pull: {posts: deletedPost._id}})
 
+        deletedPost.comments.forEach(async (comment)=>{
+
+            await Comment.findByIdAndDelete(comment)
+            await User.findOneAndUpdate({comments: comment}, {$pull: {comments: comment}})
+            
+        })     
+
         res.json({succesMessage: "Post borrado"})
 
     }
