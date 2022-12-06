@@ -17,6 +17,7 @@ router.post("/userDescription/:userId", isAuth, async (req, res, next)=>{
         res.json({succesMessage: "Información personal cambiada"})
     }
     catch(err){
+        res.json(err)
         next(err)
     }
 
@@ -32,6 +33,7 @@ router.get("/personalDescription/:userId", isAuth, async (req, res, next)=>{
         res.json(foundUser.personalDescription)
     }
     catch(err){
+        res.json(err)
         next(err)
     }
 
@@ -52,6 +54,7 @@ router.post("/:id/profilePhoto", async (req, res, next)=>{
 
     }
     catch(err){
+        res.json(err)
         next(err)
     }
 
@@ -68,6 +71,7 @@ router.get("/:username/all", async (req, res, next)=>{
 
     }
     catch(err){
+        res.json(err)
         next(err)
     }
 
