@@ -108,6 +108,20 @@ router.get("/friends/:username", isAuth, async (req, res, next)=>{
 
 })
 
+router.get("/friends/all/:username", isAuth, async (req, res, next)=>{
+
+    const {username} = req.params
+
+    try{
+        const friendsArray = await User.findOne({username}).select("friends").populate("friends")
+        res.json(friendsArray)
+    }
+    catch(err){
+        next(err)
+    }
+
+})
+
 router.get("/friendVerify/:userId/:username", isAuth, async (req, res, next)=>{
 
     const {username, userId} = req.params

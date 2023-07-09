@@ -19,4 +19,8 @@ router.use("/user", userRoutes)
 const uploaderRoutes = require("./uploader.routes")
 router.use("/uploader", uploaderRoutes)
 
+const chatRoutes = require("./chat.routes")
+router.use("/chat", chatRoutes)
+
+
 module.exports = router;
