@@ -129,7 +129,6 @@ router.get("/friendVerify/:userId/:username", isAuth, async (req, res, next)=>{
     try{
 
         const usuario = await User.findOne({$and: [{username: username}, {friends: userId}]})
-        console.log(usuario)
 
         if(usuario == null){
             await User.findOneAndUpdate({username: username}, {$addToSet: {friends: userId}})

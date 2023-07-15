@@ -7,10 +7,12 @@ const messageSchema = new Schema(
         required: true
     },
     author: {
+        required: true,
         type: Schema.Types.ObjectId,
         ref: "User"
     },
     receiver: {
+        required: true,
         type: Schema.Types.ObjectId,
         ref: "User"
     }
