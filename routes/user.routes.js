@@ -1,4 +1,5 @@
 const router = require("express").Router()
+const { isValidObjectId } = require("mongoose")
 const isAuth = require("../middlewares/isAuth")
 const User = require("../models/User.model")
 
@@ -94,13 +95,20 @@ router.get("/:id", async (req, res, next) => {
 })
 
 
-router.get("/friends/:username", isAuth, async (req, res, next) => {
+router.get("/friends/:username/:userId", isAuth, async (req, res, next) => {
 
-    const { username } = req.params
+    const { username, userId } = req.params
 
     try {
-        const friendsArray = await User.findOne({ username }).select("friends")
-        res.json(friendsArray.friends)
+        const usuario = await User.findOne({ $and: [{ username }, { friends: userId }] })
+
+        if (usuario == null) {
+
+            res.json({ result: false })
+            return
+        }
+
+        res.json({ result: true })
     }
     catch (err) {
         next(err)
@@ -133,19 +141,40 @@ router.get("/friendVerify/:userId/:username", isAuth, async (req, res, next) => 
         if (usuario == null) {
             const user = await User.findOneAndUpdate({ username: username }, { $addToSet: { friends: userId } })
             await User.findByIdAndUpdate(userId, { $addToSet: { followers: user._id } })
-            res.json({ succesMessage: "Amigo añadido" })
+            res.json({ result: true })
             return
         }
 
         await User.findOneAndUpdate({ username }, { $pull: { friends: userId } })
         await User.findByIdAndUpdate(userId, { $pull: { followers: usuario._id } })
-        res.json({ succesMessage: "Amigo eliminado" })
+        res.json({ result: false })
 
     }
     catch (err) {
         next(err)
     }
 
+})
+
+router.get("/personalInfo/:userId", async (req, res, next) => {
+
+    const { userId } = req.params
+
+    try {
+        const usuario = await User.findById(userId).select(["followers", "friends", "posts"])
+
+        if (!usuario) {
+
+            res.status(400).json({ errorMessage: "El id no es correcto" })
+            return
+        }
+
+        res.json(usuario)
+
+
+    } catch (err) {
+        next(err)
+    }
 })
 
 module.exports = router
