@@ -95,7 +95,7 @@ router.get("/:id", async (req, res, next) => {
 })
 
 
-router.get("/friends/:username/:userId", isAuth, async (req, res, next) => {
+router.get("/friends/follow/:username/:userId", isAuth, async (req, res, next) => {
 
     const { username, userId } = req.params
 
@@ -116,12 +116,12 @@ router.get("/friends/:username/:userId", isAuth, async (req, res, next) => {
 
 })
 
-router.get("/friends/all/:username", isAuth, async (req, res, next) => {
+router.get("/friends/all/:_id", isAuth, async (req, res, next) => {
 
-    const { username } = req.params
+    const { _id } = req.params
 
     try {
-        const friendsArray = await User.findOne({ username }).select("friends").populate("friends")
+        const friendsArray = await User.findById(_id).select("friends").populate("friends")
         res.json(friendsArray)
     }
     catch (err) {
